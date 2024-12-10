@@ -589,7 +589,7 @@ Kg_to_Lb:
 	printStr "Enter Kilogram(s) to convert to Pounds(LBs)"
 	ldr x0, =Kg_to_Lb_result
 	bl get_num_unit
-	ldr d5, kg_to_lb_factor
+	ldr d5, =kg_to_lb_factor
 	fmul d0, d0, d5
 	str d0, [x0]
 	ldr x0, =Kg_to_Lb_result
