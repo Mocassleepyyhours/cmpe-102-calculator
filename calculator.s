@@ -26,7 +26,15 @@
 	M_to_km_result:		.fill 1, 8, 0
 	conversion1000: 	.double 1000.0
 	km_to_m_result: 	.fill 1,8, 0
-	
+
+	//Weight Conversion 
+	Mg_to_G_result:		.fill 1, 8, 0
+	G_to_Mg_result: 	.fill 1, 8, 0
+	G_to_Kg_result:		.fill 1, 8, 0
+	Kg_to_G_result:		.fill 1, 8, 0
+	Kg_to_Lb_result:	.fill 1, 8, 0
+	kg_to_lb_factor:	.double 2.204623
+
 .text
 
 main: 
@@ -444,7 +452,7 @@ length_conversion:
 Cm_to_M: //conversion100
 	printStr "Enter Centimeter to convert to Meter"
 	ldr x0, =Cm_to_m_result
-	bl get_cm_to_m
+	bl get_num_unit
 	ldr x5, =conversion100 // #100
 	ldr d5, [x5]
 	fdiv d0, d0, d5 // holds value
@@ -459,7 +467,7 @@ Cm_to_M: //conversion100
 M_to_Cm:
 	printStr "Enter Meter to convert to Centimeter"
 	ldr x0, =M_to_cm_result
-	bl get_m_to_cm
+	bl get_num_unit
 	ldr x5, =conversion100
 	ldr d5, [x5]
 	fmul d0, d0, d5
@@ -472,7 +480,7 @@ M_to_Cm:
 M_to_Km:
 	printStr "Enter Meter to convert to Kilometer"
 	ldr x0, =M_to_km_result
-	bl get_m_to_km
+	bl get_num_unit
 	ldr x5, =conversion1000 // #1000
 	ldr d5, [x5]
 	fdiv d0, d0, d5
@@ -486,7 +494,7 @@ M_to_Km:
 Km_to_M:
 	printStr "Enter Kilometer to convert to Meter"
 	ldr x0, =km_to_m_result
-	bl get_km_to_m
+	bl get_num_unit
 	ldr x5, =conversion1000
 	ldr d5, [x5]
 	fmul d0, d0, d5
@@ -498,6 +506,102 @@ Km_to_M:
 	b length_conversion
 
 weight_conversion:
+	ldr x0, =temp_store
+	printStr "Enter 1 for Milligram to Gram"
+	printStr "Enter 2 for Gram to Milligram"
+	printStr "Enter 3 for Gram to Kilogram"
+	printStr "Enter 4 for Kilogram to Gram"
+	printStr "Enter 5 for Kilogram to Pound"
+	printStr "Enter 0 to exit to Unit Conversion"
+	bl get_input
+
+	cmp w0, #1
+	beq Mg_to_G
+
+	cmp w0, #2
+	beq G_to_Mg
+
+	cmp w0, #3
+	beq G_to_Kg
+
+	cmp w0, #4
+	beq Kg_to_G
+
+	cmp w0, #5
+	beq Kg_to_Lb
+
+	cmp w0, #0
+	beq sub_menu
+
+Mg_to_G:
+	printStr "Enter Milligram(s) to convert to Grams"
+	ldr x0, =Mg_to_G_result
+	bl get_num_unit
+	ldr x5, =conversion1000
+	ldr d5, [x5]
+	fdiv d0, d0, d5
+	str d0, [x0]
+	ldr x0, =Mg_to_G_result
+	ldr d0, [x0]
+	bl print_mg_to_g
+
+	b weight_conversion
+
+G_to_Mg:
+	printStr "Enter Gram(s) to convert to Milligrams"
+	ldr x0, =G_to_Mg_result
+	bl get_num_unit
+	ldr x5, =conversion1000
+	ldr d5, [x5]
+	fmul d0, d0, d5
+	str d0, [x0]
+	ldr x0, =G_to_Mg_result
+	ldr d0, [x0]
+	bl print_g_to_mg
+
+	b weight_conversion
+
+G_to_Kg:
+	printStr "Enter Gram(s) to convert to Kilograms"
+	ldr x0, =G_to_Kg_result
+	bl get_num_unit
+	ldr x5, =conversion1000
+	ldr d5, [x5]
+	fdiv d0, d0, d5
+	str d0, [x0]
+	ldr x0, =G_to_Kg_result
+	ldr d0, [x0]
+	bl print_g_to_kg
+
+	b weight_conversion
+
+Kg_to_G:
+	printStr "Enter Kilogram(s) to convert to grams"
+	ldr x0, =Kg_to_G_result 	
+	bl get_num_unit
+	ldr x5, =conversion1000
+	ldr d5, [x5]
+	fmul d0, d0, d5
+	str d0, [x0]
+	ldr x0, =Kg_to_G_result
+	ldr d0, [x0]
+	bl print_kg_to_g
+
+	b weight_conversion
+
+Kg_to_Lb:
+	printStr "Enter Kilogram(s) to convert to Pounds(LBs)"
+	ldr x0, =Kg_to_Lb_result
+	bl get_num_unit
+	ldr x5, =kg_to_lb_factor
+	ldr d5, [x5]
+	fmul d0, d0, d5
+	str d0, [x0]
+	ldr x0, =Kg_to_Lb_result
+	ldr d0, [x0]
+	bl print_kg_to_lb
+
+	b weight_conversion
 
 
 
