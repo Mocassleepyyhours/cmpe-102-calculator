@@ -63,43 +63,67 @@ void print(double a)
 	printf("Result is: %.3lf", a);
 	return;
 }
-double get_cm_to_m(double *value){
+
+double get_num_unit(double *value) {
 	scanf("%lf", value);
 	printf("\n");
-	return *value;
+	return *value;	
 }
+
 void print_cm_to_m(double value){
 		printf("Result is: %lf Meters", value);
 		printf("\n");
 		return;
 }
-double get_m_to_cm(double *value){
-	scanf("%lf", value);
-	printf("\n");
-	return *value;
-}
+
 void print_m_to_cm(double value){
 		printf("Result is: %lf Centimeter", value);
 		printf("\n");
 		return;
 }
-double get_m_to_km(double *value){
-	scanf("%lf", value);
-	printf("\n");
-	return *value;
-}
+
 void print_m_to_km(double value){
 		printf("Result is: %lf Kilometer", value);
 		printf("\n");
 		return;
 }
-double get_km_to_m(double *value){
-	scanf("%lf", value);
-	printf("\n");
-	return *value;
-}
+
 void print_km_to_m(double value){
 		printf("Result is: %lf Meter", value);
 		printf("\n");
 		return;
 }
+
+
+//Weight Conversion
+
+void print_mg_to_g(double value) {
+	printf("Result is: %lf Grams", value);
+	printf("\n");
+	return;
+}
+
+void print_g_to_mg(double value) {
+	printf("Result is: %lf Milligrams", value);
+	printf("\n");
+	return;
+}
+
+void print_g_to_kg(double value){
+	printf("Result is: %lf Kilograms", value);
+	printf("\n");
+	return;
+}
+
+void print_kg_to_g(double value){
+	printf("Result is: %lf Grams", value);
+	printf("\n");
+	return;
+}
+
+void print_kg_to_lb(double value){
+	printf("Result is: %lf Pounds", value);
+	printf("\n");
+	return;
+}
+
