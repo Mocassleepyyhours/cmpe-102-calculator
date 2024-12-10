@@ -511,6 +511,7 @@ weight_conversion:
 	printStr "Enter 2 for Gram to Milligram"
 	printStr "Enter 3 for Gram to Kilogram"
 	printStr "Enter 4 for Kilogram to Gram"
+	printStr "Enter 5 for Kilogram to Pound"
 	printStr "Enter 0 to exit to Unit Conversion"
 	bl get_input
 
@@ -592,7 +593,8 @@ Kg_to_Lb:
 	printStr "Enter Kilogram(s) to convert to Pounds(LBs)"
 	ldr x0, =Kg_to_Lb_result
 	bl get_num_unit
-	ldr d5, =kg_to_lb_factor
+	ldr x5, =kg_to_lb_factor
+	ldr d5, [x5]
 	fmul d0, d0, d5
 	str d0, [x0]
 	ldr x0, =Kg_to_Lb_result
