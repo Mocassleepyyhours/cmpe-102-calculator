@@ -530,7 +530,7 @@ weight_conversion:
 	beq Kg_to_Lb
 
 Mg_to_G:
-	printStr: "Enter Milligram(s) to convert to Grams"
+	printStr "Enter Milligram(s) to convert to Grams"
 	ldr x0, =Mg_to_G_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -544,7 +544,7 @@ Mg_to_G:
 	bl weight_conversion
 
 G_to_Mg:
-	printStr: "Enter Gram(s) to convert to Milligrams"
+	printStr "Enter Gram(s) to convert to Milligrams"
 	ldr x0, =G_to_Mg_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -558,7 +558,7 @@ G_to_Mg:
 	bl weight_conversion
 
 G_to_Kg:
-	printStr: "Enter Gram(s) to convert to Kilograms"
+	printStr "Enter Gram(s) to convert to Kilograms"
 	ldr x0, =G_to_Kg_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -572,7 +572,7 @@ G_to_Kg:
 	bl weight_conversion
 
 Kg_to_G:
-	printStr: "Enter Gram(s) to convert to Kilograms"
+	printStr "Enter Gram(s) to convert to Kilograms"
 	ldr x0, =Kg_to_g_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -586,7 +586,7 @@ Kg_to_G:
 	bl weight_conversion
 
 Kg_to_Lb:
-	printStr: "Enter Kilogram(s) to convert to Pounds(LBs)"
+	printStr "Enter Kilogram(s) to convert to Pounds(LBs)"
 	ldr x0, =Kg_to_Lb_result
 	bl get_num_unit
 	ldr d5, kg_to_lb_factor
