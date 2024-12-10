@@ -579,7 +579,7 @@ Kg_to_G:
 	ldr d5, [x5]
 	fmul d0, d0, d5
 	str d0, [x0]
-	ldr x0, =KG_to_g_result
+	ldr x0, =Kg_to_g_result
 	ldr d0, [x0]
 	bl print_kg_to_g
 
