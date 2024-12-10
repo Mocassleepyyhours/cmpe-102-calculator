@@ -529,6 +529,9 @@ weight_conversion:
 	cmp w0, #5
 	beq Kg_to_Lb
 
+	cmp w0, #0
+	beq sub_menu
+
 Mg_to_G:
 	printStr "Enter Milligram(s) to convert to Grams"
 	ldr x0, =Mg_to_G_result
@@ -541,7 +544,7 @@ Mg_to_G:
 	ldr d0, [x0]
 	bl print_mg_to_g
 
-	bl weight_conversion
+	b weight_conversion
 
 G_to_Mg:
 	printStr "Enter Gram(s) to convert to Milligrams"
@@ -555,7 +558,7 @@ G_to_Mg:
 	ldr d0, [x0]
 	bl print_g_to_mg
 
-	bl weight_conversion
+	b weight_conversion
 
 G_to_Kg:
 	printStr "Enter Gram(s) to convert to Kilograms"
@@ -565,25 +568,25 @@ G_to_Kg:
 	ldr d5, [x5]
 	fdiv d0, d0, d5
 	str d0, [x0]
-	ldr x0, =G_to_Mg_result
+	ldr x0, =G_to_Kg_result
 	ldr d0, [x0]
 	bl print_g_to_kg
 
-	bl weight_conversion
+	b weight_conversion
 
 Kg_to_G:
-	printStr "Enter Gram(s) to convert to Kilograms"
-	ldr x0, =Kg_to_g_result
+	printStr "Enter Kilogram(s) to convert to grams"
+	ldr x0, =Kg_to_G_result 	
 	bl get_num_unit
 	ldr x5, =conversion1000
 	ldr d5, [x5]
 	fmul d0, d0, d5
 	str d0, [x0]
-	ldr x0, =Kg_to_g_result
+	ldr x0, =Kg_to_G_result
 	ldr d0, [x0]
 	bl print_kg_to_g
 
-	bl weight_conversion
+	b weight_conversion
 
 Kg_to_Lb:
 	printStr "Enter Kilogram(s) to convert to Pounds(LBs)"
@@ -596,7 +599,7 @@ Kg_to_Lb:
 	ldr d0, [x0]
 	bl print_kg_to_lb
 
-	bl weight_conversion
+	b weight_conversion
 
 
 
