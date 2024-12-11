@@ -350,8 +350,7 @@ deci_binary_loop:
 	str w2, [x1, x2, lsl #2]
 	add x2, x2, #1
 	mov w0, w3
-	cbnz w0, deci_binary_loop
-	
+	cbnz w0, deci_binary_loop	
 	
 	b sub_menu
 	
@@ -438,7 +437,8 @@ length_conversion:
 	printStr "Enter 3 for Meter to Kilometer"
 	printStr "Enter 4 for Kilometer to Meter"
 	printStr "Enter 5 to return to Unit Conversion menu"
-	printStr "Any number to return to sub menu"
+	printStr "Enter 6 to return to Sub menu"
+	printStr "Any number to return to Main menu"
 	
 	bl get_input
 	
@@ -457,7 +457,10 @@ length_conversion:
 	cmp w0, #5
 	beq convert_units
 	
-	b sub_menu
+	cmp w0, #6
+	beq sub_menu
+	
+	b calculator_on
 	
 Cm_to_M: //conversion100
 	printStr "Enter Centimeter to convert to Meter"
@@ -523,7 +526,8 @@ weight_conversion:
 	printStr "Enter 4 for Kilogram to Gram"
 	printStr "Enter 5 for Kilogram to Pound"
 	printStr "Enter 6 to return to Unit Conversion menu"
-	printStr "Any number to return to sub menu"
+	printStr "Enter 7 to return to Sub menu"
+	printStr "Any number to return to Main menu"
 	bl get_input
 
 	cmp w0, #1
@@ -543,8 +547,11 @@ weight_conversion:
 
 	cmp w0, #6
 	beq convert_units
+		
+	cmp w0, #7
+	beq sub_menu
 	
-	b sub_menu
+	b calculator_on
 
 Mg_to_G:
 	printStr "Enter Milligram(s) to convert to Gram(s)"
@@ -617,7 +624,6 @@ Kg_to_Lb:
 	b weight_conversion
 
 
-
 exponent:
 	ldr x0, =num
 	printStr "Enter base: "			//data type double
@@ -682,7 +688,14 @@ negative:
 	//b exponent
 	fmov d9, -1			//d9 = -1 as d6 is negative
 	fabs d6, d6
+	fcmp d5, 0
+	beq error1
+	
 	b loop
+
+error1:
+	printStr "Error: exponent must be positive as base equals 0"
+	b exponent
 
 expo_result1:
 	fcmp d9, d8
