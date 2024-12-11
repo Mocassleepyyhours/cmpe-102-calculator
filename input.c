@@ -60,7 +60,7 @@ double get_num(double* num)
 
 void print(double a)
 {
-	printf("Result is: %.3lf", a);
+	printf("Result is: %.3lf\n", a);
 	return;
 }
 
@@ -77,19 +77,19 @@ void print_cm_to_m(double value){
 }
 
 void print_m_to_cm(double value){
-		printf("Result is: %lf Centimeter", value);
+		printf("Result is: %lf Centimeters", value);
 		printf("\n");
 		return;
 }
 
 void print_m_to_km(double value){
-		printf("Result is: %lf Kilometer", value);
+		printf("Result is: %lf Kilometers", value);
 		printf("\n");
 		return;
 }
 
 void print_km_to_m(double value){
-		printf("Result is: %lf Meter", value);
+		printf("Result is: %lf Meters", value);
 		printf("\n");
 		return;
 }

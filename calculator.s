@@ -81,6 +81,9 @@ calculator_on:
 	cmp w0, #3
 	beq sub_menu
 	
+	cmp w0, #4
+	beq result_history
+	
 	cmp w0, #0
 	beq exit_program
 	
@@ -228,7 +231,7 @@ sub_menu:
 	printStr "Enter 7 for Unit Conversion"
 	printStr "Enter 8 to find value of Exponent numbers"
 	printStr "Enter 9 to find Factorial"
-	printStr "Enter 0 to return back to Main Menu"
+	printStr "Any number to return back to Main Menu"
 	
 	bl get_input
 	
@@ -323,10 +326,11 @@ calc_sqrt:
 	sub sp, sp, #16
 	str d0, [sp]
 	b sub_menu
-
+	
 error:
 	printStr "Error: Input must be positive."
 	b calc_sqrt
+
 	
 convert_deci_binary: // NOT FINISHED NEED FINISHING
 	printStr "Enter a Decimal Number to Convert to Binary"
@@ -364,8 +368,8 @@ deci_binary_print:
 convert_binary_deci:
 	printStr "Enter Binary Number to Convert to Decimal"
 	ldr x0, =decimal_store
-	mov w22, #0
-	strb w22, [x0]
+	mov x22, #0
+	str x22, [x0]
 	
 	ldr x0, =temp_store
 	bl get_decimal
@@ -381,12 +385,12 @@ convert_loop: // a - (a / b) * b
 	sub w8, w6, w8 // w8 holds last digit a - (a / b) * b
 	
 	ldr x0, =decimal_store
-	ldr w10, [x0]
-	mul w8, w8, w5 // last digit * base
-	add w10, w8, w10 // decimal += last digit * base
+	ldr x10, [x0]
+	mul x8, x8, x5 // last digit * base
+	add x10, x8, x10 // decimal += last digit * base
 	
 	ldr x0, =decimal_store
-	strb w10, [x0]
+	str x10, [x0]
 	
 	//printStr "BUGGGGGGG" 
 	mul w5, w5, w2
@@ -414,9 +418,9 @@ convert_hex_deci:
 convert_units:
 	ldr x0, =temp_store
 	printStr "Unit Conversion"
-	printStr "Enter 1 for Length conversions"
-	printStr "Enter 2 for weight" // maybe if we have time, or someone else do
-	printStr "Enter 0 to back to sub menu"
+	printStr "Enter 1 for Length conversion"
+	printStr "Enter 2 for Weight conversion" 
+	printStr "Any number to back to sub menu"
 	bl get_input
 	
 	cmp w0, #1
@@ -425,16 +429,17 @@ convert_units:
 	cmp w0, #2
 	beq weight_conversion
 	
-	cmp w0, #0
-	beq sub_menu
+	b sub_menu
 
 length_conversion:
 	ldr x0, =temp_store
-	printStr "Enter 1 for Centimeter to Meters"
-	printStr "Enter 2 for Meters to Centimeter"
-	printStr "Enter 3 for Meters to Kilometers"
-	printStr "Enter 4 for Kilometers to Meters"
-	printStr "Enter 0 to exit to Unit Conversion"
+	printStr "Enter 1 for Centimeter to Meter"
+	printStr "Enter 2 for Meter to Centimeter"
+	printStr "Enter 3 for Meter to Kilometer"
+	printStr "Enter 4 for Kilometer to Meter"
+	printStr "Enter 5 to return to Unit Conversion menu"
+	printStr "Any number to return to sub menu"
+	
 	bl get_input
 	
 	cmp w0, #1
@@ -448,6 +453,11 @@ length_conversion:
 	
 	cmp w0, #4
 	beq Km_to_M
+	
+	cmp w0, #5
+	beq convert_units
+	
+	b sub_menu
 	
 Cm_to_M: //conversion100
 	printStr "Enter Centimeter to convert to Meter"
@@ -512,7 +522,8 @@ weight_conversion:
 	printStr "Enter 3 for Gram to Kilogram"
 	printStr "Enter 4 for Kilogram to Gram"
 	printStr "Enter 5 for Kilogram to Pound"
-	printStr "Enter 0 to exit to Unit Conversion"
+	printStr "Enter 6 to return to Unit Conversion menu"
+	printStr "Any number to return to sub menu"
 	bl get_input
 
 	cmp w0, #1
@@ -530,11 +541,13 @@ weight_conversion:
 	cmp w0, #5
 	beq Kg_to_Lb
 
-	cmp w0, #0
-	beq sub_menu
+	cmp w0, #6
+	beq convert_units
+	
+	b sub_menu
 
 Mg_to_G:
-	printStr "Enter Milligram(s) to convert to Grams"
+	printStr "Enter Milligram(s) to convert to Gram(s)"
 	ldr x0, =Mg_to_G_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -548,7 +561,7 @@ Mg_to_G:
 	b weight_conversion
 
 G_to_Mg:
-	printStr "Enter Gram(s) to convert to Milligrams"
+	printStr "Enter Gram(s) to convert to Milligram(s)"
 	ldr x0, =G_to_Mg_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -562,7 +575,7 @@ G_to_Mg:
 	b weight_conversion
 
 G_to_Kg:
-	printStr "Enter Gram(s) to convert to Kilograms"
+	printStr "Enter Gram(s) to convert to Kilogram(s)"
 	ldr x0, =G_to_Kg_result
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -576,7 +589,7 @@ G_to_Kg:
 	b weight_conversion
 
 Kg_to_G:
-	printStr "Enter Kilogram(s) to convert to grams"
+	printStr "Enter Kilogram(s) to convert to Gram(s)"
 	ldr x0, =Kg_to_G_result 	
 	bl get_num_unit
 	ldr x5, =conversion1000
@@ -590,7 +603,7 @@ Kg_to_G:
 	b weight_conversion
 
 Kg_to_Lb:
-	printStr "Enter Kilogram(s) to convert to Pounds(LBs)"
+	printStr "Enter Kilogram(s) to convert to Pound(s)"
 	ldr x0, =Kg_to_Lb_result
 	bl get_num_unit
 	ldr x5, =kg_to_lb_factor
@@ -687,7 +700,14 @@ expo_result2:
 	b sub_menu
 	
 factorial:
+	
+	b sub_menu
+	
+	
+result_history:
 
+	b calculator_on
+	
 	
 ABNORMAL_OPERATION:
 	printStr "CALCULATOR FAULT"
