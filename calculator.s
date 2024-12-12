@@ -408,13 +408,30 @@ convert_loop: // a - (a / b) * b
 	
 	
 convert_deci_hex:
-	printStr "in convert deci to hex"
-	b sub_menu
+    printStr "Enter a Decimal Number to Convert to Hexadecimal"
+    ldr x0, =temp_store        
+    bl get_decimal             
+
+    printStr "DEBUG: Decimal input received\n"
+    
+    // Call the C function to print hexadecimal
+    mov w0, w0                
+    bl print_hexadecimal       
+    b sub_menu   
 	
 	
 convert_hex_deci:
-	printStr "in hex to deci"
-	b sub_menu
+    printStr "Enter a Hexadecimal Number to Convert to Decimal"
+    ldr x0, =temp_store        
+    bl get_hexadecimal         
+
+    printStr "DEBUG: Hexadecimal input received\n"
+
+    // Call the C function to print the decimal value
+    mov w0, w0                 
+    bl print_decimal           
+
+    b sub_menu  
 	
 	
 convert_units:
