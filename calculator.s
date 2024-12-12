@@ -17,6 +17,7 @@
 	binary_store:		.space 32
 	decimal_store:		.fill 1, 8, 0
 	temp_store:			.fill 1, 4, 0
+	factorial_store:	.fill 1, 8, 0
 	num:				.double 0.0	
 	//prev_result:		.double 0.0
 	deci_binary_store:  .fill 20, 4, 0
@@ -26,6 +27,8 @@
 	M_to_km_result:		.fill 1, 8, 0
 	conversion1000: 	.double 1000.0
 	km_to_m_result: 	.fill 1,8, 0
+
+
 
 	//Weight Conversion 
 	Mg_to_G_result:		.fill 1, 8, 0
@@ -711,11 +714,28 @@ expo_result2:
 	bl print
 	
 	b sub_menu
-	
+
 factorial:
-	
-	b sub_menu
-	
+    printStr "Enter a non-negative integer (<= 20) to factorialize:"
+    ldr x0, =factorial_store
+    bl get_unsigned_num    // Input now in x0:x1 pair
+    mov x5, xzr           // Zero out x5
+    subs x5, x0, #1      // x5 = x0 - 1
+    mov x6, xzr          // x6 will hold upper 64 bits
+
+factorial_loop:
+    // Perform 128-bit multiplication
+    umulh x7, x0, x5     // Upper 64 bits of first product
+    mul x0, x0, x5       // Lower 64 bits of product
+    madd x6, x6, x5, x7  // Accumulate upper bits
+    
+    subs x5, x5, #1      // Decrement counter
+    cbnz x5, factorial_loop
+    
+    bl print_factorial    // Print result from x0:x6 pair
+    b sub_menu
+
+
 	
 result_history:
 

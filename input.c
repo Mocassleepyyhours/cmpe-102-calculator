@@ -127,3 +127,22 @@ void print_kg_to_lb(double value){
 	return;
 }
 
+//Factorial
+__uint128_t get_unsigned_num(__uint128_t* input) {
+    // Use single 64-bit read since we only need numbers up to 20!
+    uint64_t num;
+    scanf("%lu", &num);  // Read single 64-bit value
+    *input = (__uint128_t)num;
+    printf("\n");
+    return *input;
+}
+
+void print_factorial(__uint128_t value) {
+    if (value <= UINT64_MAX) {
+        printf("Factorial is: %lu\n", (uint64_t)value);
+    } else {
+        // For larger values, print in scientific notation
+        double scientific = (double)value;
+        printf("Factorial is: %.2e\n", scientific);
+    }
+}
