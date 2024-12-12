@@ -714,21 +714,28 @@ expo_result2:
 	bl print
 	
 	b sub_menu
-	
+
 factorial:
-	printStr "Enter a non-negative integer (<= 12) to factorialize:"
-	ldr x0, =factorial_store
-	bl get_unsigned_num	// input goes into x0
-	mov x5, xzr		//Zero out x5
-	subs x5, x0, #1 // x5 = x0 - 1
+    printStr "Enter a non-negative integer (<= 20) to factorialize:"
+    ldr x0, =factorial_store
+    bl get_unsigned_num    // Input now in x0:x1 pair
+    mov x5, xzr           // Zero out x5
+    subs x5, x0, #1      // x5 = x0 - 1
+    mov x6, xzr          // x6 will hold upper 64 bits
 
 factorial_loop:
-	mul x0, x0, x5	// x0 = x0 * x5
-	subs x5, x5, #1 // x5 = x5 - 1
-	cmp x5, #0		// if x5 is 0, then we are done
-	bne factorial_loop // if x5 is not 0, then we continue
-	bl print_factorial  // print the result
-	b sub_menu 		// go back to the sub menu
+    // Perform 128-bit multiplication
+    umulh x7, x0, x5     // Upper 64 bits of first product
+    mul x0, x0, x5       // Lower 64 bits of product
+    madd x6, x6, x5, x7  // Accumulate upper bits
+    
+    subs x5, x5, #1      // Decrement counter
+    cbnz x5, factorial_loop
+    
+    bl print_factorial    // Print result from x0:x6 pair
+    b sub_menu
+
+
 	
 result_history:
 
