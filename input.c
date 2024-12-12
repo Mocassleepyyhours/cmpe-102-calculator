@@ -146,3 +146,14 @@ void print_factorial(__uint128_t value) {
         printf("Factorial is: %.2e\n", scientific);
     }
 }
+
+void print_hexadecimal(int32_t decimal) {
+    printf("Hexadecimal value is: %X\n", decimal);  
+}
+
+int32_t get_hexadecimal() {
+    int32_t value;
+    printf("Enter a Hexadecimal Number: ");
+    scanf("%X", &value);  
+    return value;
+}
