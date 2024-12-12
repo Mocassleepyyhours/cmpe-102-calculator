@@ -3,6 +3,6 @@
 ## TODO
 - Print Previous Result
 - Math expressions?
-- Convert Decimal to Binary
-- Convert Decimal to Hex (vice versa)
+- Convert Decimal to Binary DONE
+- Convert Decimal to Hex (vice versa) DONE
 - ~~Factorial~~ DONE
