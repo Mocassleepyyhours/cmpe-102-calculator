@@ -17,6 +17,7 @@
 	binary_store:		.space 32
 	decimal_store:		.fill 1, 8, 0
 	temp_store:			.fill 1, 4, 0
+	factorial_store:	.fill 1, 8, 0
 	num:				.double 0.0	
 	//prev_result:		.double 0.0
 	deci_binary_store:  .fill 20, 4, 0
@@ -26,6 +27,8 @@
 	M_to_km_result:		.fill 1, 8, 0
 	conversion1000: 	.double 1000.0
 	km_to_m_result: 	.fill 1,8, 0
+
+
 
 	//Weight Conversion 
 	Mg_to_G_result:		.fill 1, 8, 0
@@ -713,9 +716,19 @@ expo_result2:
 	b sub_menu
 	
 factorial:
-	
-	b sub_menu
-	
+	printStr "Enter a non-negative integer (<= 12) to factorialize:"
+	ldr x0, =factorial_store
+	bl get_unsigned_num	// input goes into x0
+	mov x5, xzr		//Zero out x5
+	subs x5, x0, #1 // x5 = x0 - 1
+
+factorial_loop:
+	mul x0, x0, x5	// x0 = x0 * x5
+	subs x5, x5, #1 // x5 = x5 - 1
+	cmp x5, #0		// if x5 is 0, then we are done
+	bne factorial_loop // if x5 is not 0, then we continue
+	bl print_factorial  // print the result
+	b sub_menu 		// go back to the sub menu
 	
 result_history:
 

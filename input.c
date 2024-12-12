@@ -127,3 +127,16 @@ void print_kg_to_lb(double value){
 	return;
 }
 
+//Factorial
+void print_factorial(uint32_t value){
+	printf("Factorial is: %d", value);
+	printf("\n");
+	return;
+}
+
+
+uint32_t get_unsigned_num(uint32_t* input){
+	scanf("%d", input);
+	printf("\n");
+	return *input;
+}
