@@ -148,7 +148,7 @@ void print_factorial(__uint128_t value) {
 }
 
 void print_hexadecimal(int32_t decimal) {
-    printf("Hexadecimal value is: %X\n", decimal);  
+    printf("Hexadecimal value is: 0x%lx\n", decimal);  
 }
 
 int32_t get_hexadecimal() {
@@ -157,3 +157,8 @@ int32_t get_hexadecimal() {
     scanf("%X", &value);  
     return value;
 }
+
+void printChar(char c) {
+	putchar(c);
+}
+
