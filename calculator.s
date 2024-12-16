@@ -410,45 +410,46 @@ convert_loop: // a - (a / b) * b
 convert_deci_hex:
     printStr "Enter a Decimal Number to Convert to Hexadecimal"
     ldr x0, =temp_store      
-    bl get_decimal            
-
-    mov w1, w0                
-    mov w10, #16              
-    ldr x3, =binary_store    
-    mov x2, #0                
-
-deci_to_hex_loop:
-    udiv w4, w1, w10          
-    msub w5, w4, w10, w1      
-
-    cmp w5, #9
-    ble store_numeric
-    add w5, w5, #55           
-    b store_hex
-
-store_numeric:
-    add w5, w5, #48           
-
-store_hex:
-    strb w5, [x3, x2]        
-    add x2, x2, #1            
-    mov w1, w4                
-    cbnz w1, deci_to_hex_loop 
-
-    sub x2, x2, #1            
-    printStr "Hexadecimal value is: "
-
-print_hex_digits:
-    ldrb w5, [x3, x2]         
-    mov w0, w5                
-    bl printChar              
-    sub x2, x2, #1            
-    cmp x2, #-1               
-    bge print_hex_digits
-
-    b sub_menu               
- 
+    bl get_decimal
+	bl decimal_to_hex
 	
+	b sub_menu                   
+
+decimal_to_hex:
+    // x0 contains the decimal number
+    // The result will be returned in x0
+    mov x1, x0  // Copy input to x1
+    mov x0, #0  // Initialize result to 0
+    mov x2, #0  // Digit counter
+
+hex_loop:
+    cbz x1, reverse_hex  // If x1 is zero, we're done converting
+    and x3, x1, #0xF  // Get least significant 4 bits
+    lsl x0, x0, #4    // Shift result left by 4
+    orr x0, x0, x3    // Add new digit to result
+    lsr x1, x1, #4    // Shift input right by 4
+    add x2, x2, #1    // Increment digit counter
+    cmp x2, #16       // Check if we've processed 16 digits (64 bits)
+    b.lt hex_loop
+
+reverse_hex:
+    mov x1, x0  // Copy result to x1
+    mov x0, #0  // Clear x0 for reversed result
+    mov x2, #0  // Reset digit counter
+
+reverse_loop:
+    cbz x1, hex_done  // If x1 is zero, we're done reversing
+    and x3, x1, #0xF  // Get least significant 4 bits
+    lsl x0, x0, #4    // Shift reversed result left by 4
+    orr x0, x0, x3    // Add digit to reversed result
+    lsr x1, x1, #4    // Shift original result right by 4
+    add x2, x2, #1    // Increment digit counter
+    cmp x2, #16       // Check if we've processed 16 digits
+    b.lt reverse_loop
+
+hex_done:
+	bl print_hexadecimal
+	b sub_menu
 	
 convert_hex_deci:
     printStr "Enter a Hexadecimal Number to Convert to Decimal"
