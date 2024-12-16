@@ -148,7 +148,7 @@ void print_factorial(__uint128_t value) {
 }
 
 void print_hexadecimal(int32_t decimal) {
-    printf("Hexadecimal value is: 0x%lx\n", decimal);  
+    printf("Hexadecimal value is: 0x%x\n", decimal);  
 }
 
 int32_t get_hexadecimal() {
@@ -162,3 +162,8 @@ void printChar(char c) {
 	putchar(c);
 }
 
+void history(double a)
+{
+	printf("Previous result is: %.3lf\n", a);
+	return;
+}

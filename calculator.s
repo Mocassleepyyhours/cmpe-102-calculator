@@ -19,7 +19,7 @@
 	temp_store:			.fill 1, 4, 0
 	factorial_store:	.fill 1, 8, 0
 	num:				.double 0.0	
-	//prev_result:		.double 0.0
+	prev_result:		.skip 8//double 0.0
 	deci_binary_store:  .fill 20, 4, 0
 	Cm_to_m_result:		.fill 1, 8, 0
 	conversion100: 		.double 100.0
@@ -166,21 +166,27 @@ operations:
 	
 addition:
 	fadd d0, d3, d4	
-	stp d3, d4, [sp, #-16]! 	
+	stp d3, d4, [sp, #-16]! 
+	ldr x18, =prev_result
+	str d0,[x18]	
 	bl print
 
 	b next
 
 subtraction:
 	fsub d0, d3, d4	
-	stp d3, d4, [sp, #-16]! 	
+	stp d3, d4, [sp, #-16]! 
+	ldr x18, =prev_result
+	str d0,[x18]	
 	bl print
 
 	b next
 
 multiplication:
 	fmul d0, d3, d4	
-	stp d3, d4, [sp, #-16]! 	
+	stp d3, d4, [sp, #-16]! 
+	ldr x18, =prev_result
+	str d0,[x18]	
 	bl print
 
 	b next
@@ -190,10 +196,13 @@ division:
 	beq undefined
 	
 	fdiv d0, d3, d4	
-	stp d3, d4, [sp, #-16]! 	
+	stp d3, d4, [sp, #-16]! 
+	ldr x18, =prev_result
+	str d0,[x18]	
 	bl print
 
 	b next
+
 	
 undefined:
 	stp d3, d4, [sp, #-16]! 
@@ -470,7 +479,7 @@ convert_units:
 	printStr "Unit Conversion"
 	printStr "Enter 1 for Length conversion"
 	printStr "Enter 2 for Weight conversion" 
-	printStr "Any number to back to sub menu"
+	printStr "Any number to back to Sub menu"
 	bl get_input
 	
 	cmp w0, #1
@@ -523,7 +532,8 @@ Cm_to_M: //conversion100
 	str d0, [x0]
 	ldr x0, =Cm_to_m_result
 	ldr d0, [x0]
-	
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_cm_to_m
 	
 	b length_conversion
@@ -538,6 +548,8 @@ M_to_Cm:
 	str d0, [x0]
 	ldr x0, =M_to_cm_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_m_to_cm
 	
 	b length_conversion
@@ -551,6 +563,8 @@ M_to_Km:
 	str d0, [x0]
 	ldr x0, =M_to_km_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_m_to_km
 	
 	b length_conversion
@@ -565,6 +579,8 @@ Km_to_M:
 	str d0, [x0]
 	ldr x0, =km_to_m_result
 	ldr d0, [x0] 
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_km_to_m
 	
 	b length_conversion
@@ -614,6 +630,8 @@ Mg_to_G:
 	str d0, [x0]
 	ldr x0, =Mg_to_G_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_mg_to_g
 
 	b weight_conversion
@@ -628,6 +646,8 @@ G_to_Mg:
 	str d0, [x0]
 	ldr x0, =G_to_Mg_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_g_to_mg
 
 	b weight_conversion
@@ -642,6 +662,8 @@ G_to_Kg:
 	str d0, [x0]
 	ldr x0, =G_to_Kg_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_g_to_kg
 
 	b weight_conversion
@@ -656,6 +678,8 @@ Kg_to_G:
 	str d0, [x0]
 	ldr x0, =Kg_to_G_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_kg_to_g
 
 	b weight_conversion
@@ -670,9 +694,12 @@ Kg_to_Lb:
 	str d0, [x0]
 	ldr x0, =Kg_to_Lb_result
 	ldr d0, [x0]
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print_kg_to_lb
 
 	b weight_conversion
+
 
 
 exponent:
@@ -723,6 +750,8 @@ loop:
 	
 special1:			
 	fmov d0, d7
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print
 	
 	b sub_menu
@@ -730,6 +759,8 @@ special1:
 special2:
 	fmov d7, d5			
 	fmov d0, d7
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print
 	
 	b sub_menu
@@ -753,15 +784,20 @@ expo_result1:
 	bne expo_result2
 	
 	fmov d0, d7
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print
 	
 	b sub_menu
 
 expo_result2:
 	fdiv d0, d8, d7
+	ldr x18, =prev_result
+	str d0,[x18]
 	bl print
 	
 	b sub_menu
+	
 
 factorial:
     printStr "Enter a non-negative integer (<= 20) to factorialize:"
@@ -786,7 +822,9 @@ factorial_loop:
 
 	
 result_history:
-
+	ldr x0, =prev_result
+	ldr d0, [x0]
+	bl history
 	b calculator_on
 	
 	
