@@ -409,15 +409,45 @@ convert_loop: // a - (a / b) * b
 	
 convert_deci_hex:
     printStr "Enter a Decimal Number to Convert to Hexadecimal"
-    ldr x0, =temp_store        
-    bl get_decimal             
+    ldr x0, =temp_store      
+    bl get_decimal            
 
-    printStr "DEBUG: Decimal input received\n"
-    
-    // Call the C function to print hexadecimal
-    mov w0, w0                
-    bl print_hexadecimal       
-    b sub_menu   
+    mov w1, w0                
+    mov w10, #16              
+    ldr x3, =binary_store    
+    mov x2, #0                
+
+deci_to_hex_loop:
+    udiv w4, w1, w10          
+    msub w5, w4, w10, w1      
+
+    cmp w5, #9
+    ble store_numeric
+    add w5, w5, #55           
+    b store_hex
+
+store_numeric:
+    add w5, w5, #48           
+
+store_hex:
+    strb w5, [x3, x2]        
+    add x2, x2, #1            
+    mov w1, w4                
+    cbnz w1, deci_to_hex_loop 
+
+    sub x2, x2, #1            
+    printStr "Hexadecimal value is: "
+
+print_hex_digits:
+    ldrb w5, [x3, x2]         
+    mov w0, w5                
+    bl printChar              
+    sub x2, x2, #1            
+    cmp x2, #-1               
+    bge print_hex_digits
+
+    b sub_menu               
+ 
 	
 	
 convert_hex_deci:
